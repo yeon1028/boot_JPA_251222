@@ -1,5 +1,9 @@
 console.log("boardComment.js in");
 console.log(bnoValue);
+console.log(loginUser);
+
+const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
 document.getElementById('cmtAddBtn').addEventListener('click',()=>{
     const cmtText = document.getElementById('cmtText');
@@ -46,8 +50,10 @@ function spreadCommentList(bno, page=1){
                 li += `${comment.content}`;
                 li += `</div>`;
                 li += `<span class="badge text-bg-primary">${comment.regDate}</span>`;
-                li += `<button type="button" class="btn btn-sm btn-outline-warning mod" data-bs-toggle="modal" data-bs-target="#commentModal">e</button>`;
-                li += `<button type="button" class="btn btn-sm btn-outline-danger del">x</button>`;
+                if(loginUser == comment.writer){
+                    li += `<button type="button" class="btn btn-sm btn-outline-warning mod" data-bs-toggle="modal" data-bs-target="#commentModal">수정</button>`;
+                    li += `<button type="button" class="btn btn-sm btn-outline-danger del">삭제</button>`;
+                }
                 li += `</li>`;
             }
             ul.innerHTML += li;
@@ -134,6 +140,9 @@ async function removeCommentToServer(cno) {
         const url = "/comment/remove/"+cno;
         const config ={
             method: 'delete',
+            headers:{
+                [csrfHeader] : csrfToken
+            }
         }
         const resp = await fetch(url, config);
         const result = resp.text();
@@ -143,7 +152,6 @@ async function removeCommentToServer(cno) {
     }
 }
 
-
 // modify
 async function updateCommentToServer(modData) {
     try {
@@ -151,7 +159,8 @@ async function updateCommentToServer(modData) {
         const config={
             method:'put',
             headers: {
-                'content-type': 'application/json; charset=utf-8'
+                'content-type': 'application/json; charset=utf-8',
+                [csrfHeader] : csrfToken
             },
             body: JSON.stringify(modData)
         }
@@ -174,6 +183,7 @@ async function commentListFromServer(bno, page) {
         console.log(error);
     }
 }
+
 // post
 async function postCommentToServer(cmtData) {
     try {
@@ -181,7 +191,8 @@ async function postCommentToServer(cmtData) {
      const config = {
         method: 'post',
         headers: {
-            'content-type':'application/json; charset=utf-8'
+            'content-type':'application/json; charset=utf-8',
+            [csrfHeader] : csrfToken
         },
         body:JSON.stringify(cmtData)
      };

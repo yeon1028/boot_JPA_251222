@@ -28,7 +28,7 @@ public class FileSweeper {
     // 일치하지 않는파일(DB != file)은 삭제 (폴더에서 삭제)
 
     private final BoardService boardService;
-    private final String BASE_PATH = "D:\\web_0826_omr\\_myProject\\_java\\_fileUpload\\";
+    private final String BASE_PATH = "D:\\web_java_pcy\\_myProject\\_java\\_fileUpload\\";
 
     //cron 방식 = 초 분 시 일 월 요일 년도(생략가능)
     @Scheduled(cron = "0 37 17 * * * ")
@@ -59,7 +59,7 @@ public class FileSweeper {
         log.info(">>>> currFile >> {}", currFile);
 
         // today 경로 기반 저장된 파일 검색(경로만)
-        // D:\web_0826_omr\_myProject\_java\_fileUpload\2025\12\26
+        // D:\web_java_pcy\_myProject\_java\_fileUpload\2025\12\26
         File dir = Paths.get(BASE_PATH+today).toFile();
 
         // 경로안에 있는 파일을 가져오기 (배열로 리턴)

@@ -1,0 +1,63 @@
+package com.example.demo.service;
+
+import com.example.demo.dto.AuthUserDTO;
+import com.example.demo.dto.UserDTO;
+import com.example.demo.entity.AuthRole;
+import com.example.demo.entity.AuthUser;
+import com.example.demo.entity.User;
+
+import java.util.List;
+
+public interface UserService {
+
+  // convert DtoToEntity
+  default User convertDtoToEntity(UserDTO userDTO){
+    return User.builder()
+        .email(userDTO.getEmail())
+        .pw(userDTO.getPw())
+        .nickName(userDTO.getNickName())
+        .lastLogin(userDTO.getLastLogin())
+        .build();
+  }
+
+  // Entity => DTO
+  default UserDTO convertEntityToDto(User user){
+    return UserDTO.builder()
+        .email(user.getEmail())
+        .nickName(user.getNickName())
+        .lastLogin(user.getLastLogin())
+        .regDate(user.getRegDate())
+        .modDate(user.getModDate())
+        .authList(user.getAuthList() == null ? null :
+            user.getAuthList().stream()
+                .map(this::convertAuthEntityToAuthDto)
+                .toList())
+        .build();
+  }
+
+  // authDto 변환
+  default AuthUserDTO convertAuthEntityToAuthDto(AuthUser authUser) {
+    return AuthUserDTO.builder()
+        .id(authUser.getId())
+        .email(authUser.getUser().getEmail())
+        .role(authUser.getAuth().getRoleName())
+        .build();
+  }
+
+  // authEntity 변환
+  default AuthUser convertAuthDtoToEntity(AuthUserDTO authUserDTO) {
+    return null;
+  }
+
+  String register(UserDTO userDTO);
+
+  void lastLoginUpdate(String name);
+
+  String modify(UserDTO userDTO);
+
+  List<UserDTO> getList();
+
+  UserDTO getDetail(String name);
+
+  String remove(String email);
+}

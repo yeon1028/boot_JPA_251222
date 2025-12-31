@@ -8,7 +8,7 @@ import java.io.File;
 
 @Slf4j
 public class FileRemoveHandler {
-    private final String DIR = "D:\\web_0826_omr\\_myProject\\_java\\_fileUpload";
+    private final String DIR = "D:\\web_java_pcy\\_myProject\\_java\\_fileUpload";
 
     public boolean removeFile(FileDTO fileDTO){
         // file.delete() // 파일삭제

@@ -17,7 +17,7 @@ import java.util.UUID;
 public class FileHandler {
     // 저장될 파일 데이터 + 직접 폴더에 파일을 저장
 
-    private final String UP_DIR = "D:\\web_0826_omr\\_myProject\\_java\\_fileUpload";
+    private final String UP_DIR = "D:\\web_java_pcy\\_myProject\\_java\\_fileUpload";
 
     public List<FileDTO> uploadFile(MultipartFile[] files){
         List<FileDTO> fileList = new ArrayList<>();

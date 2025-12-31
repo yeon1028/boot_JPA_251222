@@ -58,20 +58,23 @@ public class BoardController {
 //        model.addAttribute("list", list);
 //    }
 
+// select * from board order by bno desc limit 0,10;
+// pageNo = 1; // 3page
+    /* Page<BoardDTO> list = boardService.getList(pageNo);
+    log.info(">>>> getTotalElements >> {}", list.getTotalElements()); // 전체 게시글 수
+    log.info(">>>> getTotalPages >> {}", list.getTotalPages()); // 전체 페이수 수
+    log.info(">>>> getPageable >> {}", list.getPageable());
+    log.info(">>>> hasNext >> {}", list.hasNext()); // 다음 여부
+    log.info(">>>> hasPrevious >> {}", list.hasPrevious()); // 이전 여부 */
+
     @GetMapping("/list")
     public void list(Model model,
-                     @RequestParam(name="pageNo", defaultValue = "1", required = false) int pageNo){
-        // select * from board order by bno desc limit 0,10;
-        //pageNo = 1; // 3page
-        Page<BoardDTO> list = boardService.getList(pageNo);
-        log.info(">>>> getTotalElements >> {}", list.getTotalElements()); // 전체 게시글 수
-        log.info(">>>> getTotalPages >> {}", list.getTotalPages()); // 전체 페이수 수
-        log.info(">>>> getPageable >> {}", list.getPageable());
-        log.info(">>>> hasNext >> {}", list.hasNext()); // 다음 여부
-        log.info(">>>> hasPrevious >> {}", list.hasPrevious()); // 이전 여부
-
-        PageHandler<BoardDTO> pageHandler = new PageHandler<>(list, pageNo);
-
+                     @RequestParam(name="pageNo", defaultValue = "1", required = false) int pageNo,
+                     @RequestParam(name = "type", required = false) String type,
+                     @RequestParam(name = "keyword", required = false) String keyword){
+        Page<BoardDTO> list = boardService.getList(pageNo, type, keyword);
+        PageHandler<BoardDTO> pageHandler = new PageHandler<>(list, pageNo, type, keyword);
+        log.info(">>> pageHandler>> {}", pageHandler);
         model.addAttribute("ph", pageHandler);
     }
 
